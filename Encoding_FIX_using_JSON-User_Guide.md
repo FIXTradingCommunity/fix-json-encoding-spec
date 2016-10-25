@@ -1,3 +1,5 @@
+![](./media/FIX-logo.jpg)\\
+
 # Encoding FIX using JSON
 
 *JavaScript Object Notation*
