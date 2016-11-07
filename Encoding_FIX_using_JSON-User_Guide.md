@@ -34,7 +34,7 @@ PROTOCOL IS ASSUMED BY THE USER.
 
 NO PERSON OR ENTITY ASSOCIATED WITH THE FIX PROTOCOL SHALL HAVE ANY LIABILITY
 FOR DAMAGES OF ANY KIND ARISING IN ANY MANNER OUT OF OR IN CONNECTION WITH ANY
-USER'S USE OF (OR ANY INABILITY TO USE) THE FIX PROTOCOL, WHETHER DIRECT,
+USER’S USE OF (OR ANY INABILITY TO USE) THE FIX PROTOCOL, WHETHER DIRECT,
 INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL (INCLUDING, WITHOUT LIMITATION,
 LOSS OF DATA, LOSS OF USE, CLAIMS OF THIRD PARTIES OR LOST PROFITS OR REVENUES
 OR OTHER ECONOMIC LOSS), WHETHER IN TORT (INCLUDING NEGLIGENCE AND STRICT
@@ -62,10 +62,11 @@ Copyright 2003-2016 FIX Protocol Limited, all rights reserved.
 
 **Document History**
 
-| Revision | Date       | Author                        | Revision Comments                            |
-|----------|------------|-------------------------------|----------------------------------------------|
-| 0.1.0    | 2016-04-14 | Don Mendelson                 | Initial draft.                               |
-| 0.2.0    | 2016-09-12 | Mike Gatny, Connamara Systems | Updated according to Working Group feedback. |
+| Revision | Date       | Author                        | Revision Comments                                        |
+|----------|------------|-------------------------------|----------------------------------------------------------|
+| 0.1.0    | 2016-04-14 | Don Mendelson                 | Initial draft.                                           |
+| 0.2.0    | 2016-09-12 | Mike Gatny, Connamara Systems | Updated according to Working Group feedback.             |
+| 0.3.0    | 2016-11-04 | Mike Gatny, Connamara Systems | Recommend EP206 for sub-millisecond date/time precision. |
 
 Introduction
 ============
@@ -116,10 +117,10 @@ JSON is so simple that the standard’s authors foresaw no need for versioning s
 
 - An **array** is an ordered list of values.
 - An **object** is a collection of name/value pairs. Names are *strings*.
-- A **value** can be an *object, array, number, string,**boolean**,* or *null*.
+- A **value** can be an *object*, *array*, *number*, *string*, *boolean*, or *null*.
 - **Numbers** are signed. There is no syntactic distinction between integer and floating point values. In practice, most implementations store all numbers as double precision binary floating point.
 - **Strings** are Unicode, with a few rules for escaping special values.
-- **Booleans** are *true*or*false.*
+- **Booleans** are *true* or *false*.
 - Arbitrary levels of *object* nesting are allowed.
 
 Standards References
@@ -137,15 +138,18 @@ This user guide provides standardized solutions to the following issues.
 
 ### Dates and Times
 
-JSON has no explicit provision for encoding dates or times, although JavaScript
-has a Date object. Fortunately, the Date object can extract a date/time in a
-string format compatible with an international standard, namely ISO 8601.
+JSON has no explicit provision for encoding dates or times. However, most
+languages/platforms that support JSON also support conversion of date/time to
+and from strings in ISO 8601 format (e.g. the JavaScript **Date** object).
 
-Another potential issue is that the JavaScript Date object only supports
-millisecond precision while FIX timestamps sometimes require micro or
-nanosecond precision. Given that any timestamps captured on the client side are
-limited by PC clock precision, however, millisecond precision should be
-sufficient for web applications.
+Another potential issue is that particular languages/platforms only support
+millisecond precision (e.g. the JavaScript **Date** object), while FIX
+timestamps may require microsecond or nanosecond precision. Given that any
+timestamps captured on the client side are limited by PC clock precision,
+millisecond precision should be sufficient for web applications.  When finer
+than millisecond precision is required, applications should adhere to the
+recommendations of [FIX.5.0 SP2 EP206: Clock Synchronization Data Types
+Enhancements](http://www.fixtradingcommunity.org/pg/extensions/extension-pack?ExtensionID=EP206).
 
 ### Decimal Representation
 
@@ -157,12 +161,14 @@ encodings, are unfortunately pointless.
 
 ### Enumerations
 
-Enumerations of valid values are needed for codes in FIX fields. Unlike many
-other programming languages, JavaScript and JSON have no special syntax for
-enumerations. Although it is possible to emulate an enumeration in JavaScript
-with an associative array of symbolic names and values, deserialization of a
-code in JSON does not automatically associate to its symbolic name, and
-serialized strings or numbers are not constrained to valid values.
+Enumerations of valid values are needed for codes in FIX fields, but JSON has no special syntax for enumerations.
+
+Languages/platforms that support JSON may also lack support for enumerations
+(e.g. JavaScript).  Although it may be possible in such cases to emulate an
+enumeration with an associative array of symbolic names and values,
+deserialization of a code in JSON does not automatically associate to its
+symbolic name, and serialized strings or numbers are not constrained to valid
+values.
 
 ### No tags
 
@@ -176,11 +182,12 @@ numbers of fields per message.
 
 JSON serialization and deserialization are not controlled by an external
 template or schema, only by an object that is being serialized. Each object is
-*sui generis*; JavaScript does not have classes that objects must conform to,
-as realized by Java, C\# and C++. It does have a prototype feature, but
-JavaScript objects are quite malleable. Properties and functions can be added
-on the fly. Nevertheless, it would be possible to generate JavaScript objects
-corresponding to messages defined by the FIX Repository.
+*sui generis*; JSON grew out of JavaScript, which does not have classes that
+objects must conform to, as realized by Java, C\# and C++. It does have a
+prototype feature, but JavaScript objects are quite malleable. Properties and
+functions can be added on the fly. Nevertheless, it is possible to generate
+JSON objects corresponding to messages defined by the FIX Repository or FIX
+Orchestra.
 
 Constraint
 ----------
@@ -210,7 +217,7 @@ quantities, etc. Furthermore, most implementations (e.g. JavaScript) store all
 JSON numeric values using a binary floating point data type. Using JSON
 *string* values to represent FIX protocol numeric types circumvents this issue,
 and allows applications to choose the most appropriate data type provided by
-their platform (e.g. Java BigDecimal).
+their language/platform (e.g. the Java *BigDecimal* type).
 
 Names
 -----
@@ -223,8 +230,8 @@ applications to display a human-readable form with little or no logic and
 without requiring a data dictionary in the browser. However, for user-defined
 fields, the *Tag* number may be used instead of the *Name*.
 
-The field’s *Value*should be used instead of its *SymbolicName* since there are
-many cases (e.g. bonds, complex options) where the *SymbolicName*means
+The field’s *Value* should be used instead of its *SymbolicName* since there
+are many cases (e.g. bonds, complex options) where the *SymbolicName* means
 something other than how it is being used.
 
 Field Encoding
@@ -233,7 +240,7 @@ Field Encoding
 Fields are encoded in accordance with the JSON standard as name/value pairs.
 Values must be serialized as JSON *strings*.
 
-Example of FIX field encoded as a JSON name/value pair:
+Example of a FIX field encoded as a JSON name/value pair:
 
 | FIX tag=value Encoding | JSON Encoding     |
 |------------------------|-------------------|
@@ -251,14 +258,14 @@ Message Structure
 Field Presence
 --------------
 
-Although JSON does have a special value for null, it need not be used for a
+Although JSON does have a special value for *null*, it need not be used for a
 non-populated optional FIX field. Like FIX *tag=value* encoding, optional
 fields that are not populated are simply not serialized on the wire.
 
 Field Order
 -----------
 
-Like FIX *tag=value* encoding, order of field within a message or repeating
+Like FIX *tag=value* encoding, order of fields within a message or repeating
 group entry is not significant. All fields are accessed by name.
 
 Message Framing
@@ -272,7 +279,7 @@ Since this encoding is designed for use with web protocols, message framing is
 generally handled by the session layer protocol, e.g. HTTP or websockets. In
 these cases, no additional framing protocol is needed.
 
-For cases where additional a framing protocol *is* needed, applications may use
+For cases where an additional framing protocol *is* needed, applications may use
 *FIX Simple Open Framing Header* (SOFH).
 
 Header, Body, and Trailer
@@ -289,12 +296,12 @@ Every JSON message must have top-level fields named “Header”, “Body”, an
 }
 ```
 
-This structure serves the goal of not discarding information that is useful
+This structure serves the goal of *not* discarding information that is useful
 when converting to/from other FIX encodings.
 
 JSON encoding does not include a “CheckSum” field since it is unlikely to be
-useful at best, and incorrect at worst (e.g. if copied over from another FIX
-encoding).
+useful at best, and likely to be incorrect at worst (e.g. if copied over from
+another FIX encoding).
 
 Message Type
 ------------
@@ -323,10 +330,10 @@ entry is its own JSON object. Because some of the fields may be optional, not
 all entries are required to contain the same fields.
 
 The count of entries is implicit to the array structure. There is no explicit
-NumInGroup field in the JSON encoding.
+*NumInGroup* field in the JSON encoding.
 
-The name of a repeating group is the name of the associated NumInGroup field
-name as it appears in the FIX repository.
+The name of a repeating group is the name of the associated *NumInGroup* field
+name as it appears in the FIX Repository.
 
 Example of a “NoMDEntries” group with two entries:
 
