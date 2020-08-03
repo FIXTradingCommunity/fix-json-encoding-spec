@@ -1,73 +1,3 @@
-![](./media/FIX-logo.jpg)\\
-
-# Encoding FIX using JSON
-
-*JavaScript Object Notation*
-
-**Release Candidate 1 – User Guide**
-
-**RELEASE CANDIDATE 1 Document Revision 0.22: April 14, 2016**
-
-**THIS DOCUMENT IS A RELEASE CANDIDATE FOR A PROPOSED FIX TECHNICAL STANDARD. A
-RELEASE CANDIDATE HAS BEEN APPROVED BY THE GLOBAL TECHNICAL COMMITTEE AS AN
-INITIAL STEP IN CREATING A NEW FIX TECHNICAL STANDARD. POTENTIAL ADOPTERS ARE
-STRONGLY ENCOURAGED TO BEGIN WORKING WITH THE RELEASE CANDIDATE AND TO PROVIDE
-FEEDBACK TO THE GLOBAL TECHNICAL COMMITTEE AND THE WORKING GROUP THAT SUBMITTED
-THE PROPOSAL. THE FEEDBACK TO THE RELEASE CANDIDATE WILL DETERMINE IF ANOTHER
-REVISION AND RELEASE CANDIDATE IS NECESSARY OR IF THE RELEASE CANDIDATE CAN BE
-PROMOTED TO BECOME A FIX TECHNICAL STANDARD DRAFT.**
-
-© Copyright 2016 FIX Protocol Limited
-
-**DISCLAIMER**
-
-THE INFORMATION CONTAINED HEREIN AND THE FINANCIAL INFORMATION EXCHANGE
-PROTOCOL (COLLECTIVELY, THE "FIX PROTOCOL") ARE PROVIDED "AS IS" AND NO PERSON
-OR ENTITY ASSOCIATED WITH THE FIX PROTOCOL MAKES ANY REPRESENTATION OR
-WARRANTY, EXPRESS OR IMPLIED, AS TO THE FIX PROTOCOL (OR THE RESULTS TO BE
-OBTAINED BY THE USE THEREOF) OR ANY OTHER MATTER AND EACH SUCH PERSON AND
-ENTITY SPECIFICALLY DISCLAIMS ANY WARRANTY OF ORIGINALITY, ACCURACY,
-COMPLETENESS, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. SUCH PERSONS
-AND ENTITIES DO NOT WARRANT THAT THE FIX PROTOCOL WILL CONFORM TO ANY
-DESCRIPTION THEREOF OR BE FREE OF ERRORS. THE ENTIRE RISK OF ANY USE OF THE FIX
-PROTOCOL IS ASSUMED BY THE USER.
-
-NO PERSON OR ENTITY ASSOCIATED WITH THE FIX PROTOCOL SHALL HAVE ANY LIABILITY
-FOR DAMAGES OF ANY KIND ARISING IN ANY MANNER OUT OF OR IN CONNECTION WITH ANY
-USER’S USE OF (OR ANY INABILITY TO USE) THE FIX PROTOCOL, WHETHER DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL OR CONSEQUENTIAL (INCLUDING, WITHOUT LIMITATION,
-LOSS OF DATA, LOSS OF USE, CLAIMS OF THIRD PARTIES OR LOST PROFITS OR REVENUES
-OR OTHER ECONOMIC LOSS), WHETHER IN TORT (INCLUDING NEGLIGENCE AND STRICT
-LIABILITY), CONTRACT OR OTHERWISE, WHETHER OR NOT ANY SUCH PERSON OR ENTITY HAS
-BEEN ADVISED OF, OR OTHERWISE MIGHT HAVE ANTICIPATED THE POSSIBILITY OF, SUCH
-DAMAGES.
-
-**DRAFT OR NOT RATIFIED PROPOSALS**
-(REFER TO PROPOSAL STATUS AND/OR SUBMISSION
-STATUS ON COVER PAGE) ARE PROVIDED "AS IS" TO INTERESTED PARTIES FOR DISCUSSION
-ONLY. PARTIES THAT CHOOSE TO IMPLEMENT THIS DRAFT PROPOSAL DO SO AT THEIR OWN
-RISK. IT IS A DRAFT DOCUMENT AND MAY BE UPDATED, REPLACED, OR MADE OBSOLETE BY
-OTHER DOCUMENTS AT ANY TIME. THE FPL GLOBAL TECHNICAL COMMITTEE WILL NOT ALLOW
-EARLY IMPLEMENTATION TO CONSTRAIN ITS ABILITY TO MAKE CHANGES TO THIS
-SPECIFICATION PRIOR TO FINAL RELEASE. IT IS INAPPROPRIATE TO USE FPL WORKING
-DRAFTS AS REFERENCE MATERIAL OR TO CITE THEM AS OTHER THAN “WORKS IN PROGRESS”.
-THE FPL GLOBAL TECHNICAL COMMITTEE WILL ISSUE, UPON COMPLETION OF REVIEW AND
-RATIFICATION, AN OFFICIAL STATUS ("APPROVED") OF/FOR THE PROPOSAL AND A RELEASE
-NUMBER.
-
-No proprietary or ownership interest of any kind is granted with respect to the
-FIX Protocol (or any rights therein).
-
-Copyright 2003-2016 FIX Protocol Limited, all rights reserved.
-
-**Document History**
-
-| Revision | Date       | Author                        | Revision Comments                                        |
-|----------|------------|-------------------------------|----------------------------------------------------------|
-| 0.1.0    | 2016-04-14 | Don Mendelson                 | Initial draft.                                           |
-| 0.2.0    | 2016-09-12 | Mike Gatny, Connamara Systems | Updated according to Working Group feedback.             |
-| 0.3.0    | 2016-11-04 | Mike Gatny, Connamara Systems | Recommend EP206 for sub-millisecond date/time precision. |
-
 Introduction
 ============
 
@@ -76,7 +6,7 @@ Objective
 
 The objective of this user guide is to support development of web applications
 that require FIX semantics. JSON is another alternative to existing FIX
-encodings, including tag=value, FIXML, FAST, SBE and Google Protocol Buffers.
+encodings, including tagvalue, FIXML, FAST, SBE and Google Protocol Buffers.
 
 JSON encoding of FIX is optimized for operations in a web browser without the
 need for other software distribution to clients.
@@ -149,7 +79,7 @@ timestamps captured on the client side are limited by PC clock precision,
 millisecond precision should be sufficient for web applications.  When finer
 than millisecond precision is required, applications should adhere to the
 recommendations of [FIX.5.0 SP2 EP206: Clock Synchronization Data Types
-Enhancements](http://www.fixtradingcommunity.org/pg/extensions/extension-pack?ExtensionID=EP206).
+Enhancements](https://www.fixtrading.org/packages/ep206/).
 
 ### Decimal Representation
 
@@ -406,4 +336,3 @@ Explicit versioning is not supported by the JSON encoding of FIX. Generally,
 this is unnecessary since web sites serve client-side code all with page
 contents. Since the server controls encoding on both sides, they should always
 be internally consistent.
-
